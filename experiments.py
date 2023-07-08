@@ -4,7 +4,7 @@ import gym
 from gym.wrappers import Monitor
 import numpy.random as np_random
 from mujoco_py import GlfwContext
-#GlfwContext(offscreen=True)  # Create a window to init GLFW.
+GlfwContext(offscreen=True)  # Create a window to init GLFW.
 
 from maml_rl.policies.normal_mlp import NormalMLPPolicy
 from maml_rl.baselines.linear_baseline import LinearFeatureBaseline

@@ -1,0 +1,34 @@
+INFO - train - Running command 'train'
+INFO - train - Started run with ID "2"
+obs_space_n_before: [(6,), (6,)]
+obs_space_n_after: [[6]
+ [6]]
+act_space_n_before: [Discrete(2), Discrete(2)]
+act_space_n_after: [[2]
+ [2]]
+2023-07-08 13:36:25.867247: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN)to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2023-07-08 13:36:25.877053: I tensorflow/core/platform/profile_utils/cpu_utils.cc:104] CPU Frequency: 2591990000 Hz
+2023-07-08 13:36:25.878948: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x5632339564f0 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2023-07-08 13:36:25.878996: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2023-07-08 13:36:25.882631: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1257] Device interconnect StreamExecutor with strength 1 edge matrix:
+2023-07-08 13:36:25.882738: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1263]      
+obs_space_n_before: [(6,), (6,)]
+obs_space_n_after: [[6]
+ [6]]
+act_space_n_before: [Discrete(2), Discrete(2)]
+act_space_n_after: [[2]
+ [2]]
+Using good policy maddpg and adv policy maddpg
+env.n_adversaries: 0
+2
+Starting iterations...
+/home/chinemerem/.pyenv/versions/3.7.16/lib/python3.7/site-packages/numpy/core/fromnumeric.py:3335: RuntimeWarning: Mean of empty slice.
+  out=out, **kwargs)
+/home/chinemerem/.pyenv/versions/3.7.16/lib/python3.7/site-packages/numpy/core/_methods.py:161: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+steps: 739, episodes: 10, mean episode reward: 25.155590780347463, time: 1.822
+steps: 1479, episodes: 20, mean episode reward: 24.194943987619762, time: 1.515
+steps: 2219, episodes: 30, mean episode reward: 22.572228943016032, time: 2.153
+steps: 2959, episodes: 40, mean episode reward: 34.93183142989658, time: 2.064
+steps: 3699, episodes: 50, mean episode reward: 18.38179049776378, time: 1.872

@@ -1,0 +1,207 @@
+{
+  "artifacts": [],
+  "command": "train",
+  "experiment": {
+    "base_dir": "/mnt/c/Users/Chinemerem/Documents/GitHub/maml-ppo",
+    "dependencies": [
+      "numpy==1.18.5",
+      "sacred==0.8.1",
+      "tensorflow==2.3.1"
+    ],
+    "mainfile": "test_2CAV_BFoptimal_Kaige.py",
+    "name": "train",
+    "repositories": [
+      {
+        "commit": "d61ddcfc43bb9a957ffab9132a5bb8f96c6e419f",
+        "dirty": true,
+        "url": "https://github.com/ChinemeremChigbo/maml-ppo.git"
+      },
+      {
+        "commit": "d61ddcfc43bb9a957ffab9132a5bb8f96c6e419f",
+        "dirty": true,
+        "url": "https://github.com/ChinemeremChigbo/maml-ppo.git"
+      },
+      {
+        "commit": "d61ddcfc43bb9a957ffab9132a5bb8f96c6e419f",
+        "dirty": true,
+        "url": "https://github.com/ChinemeremChigbo/maml-ppo.git"
+      },
+      {
+        "commit": "d61ddcfc43bb9a957ffab9132a5bb8f96c6e419f",
+        "dirty": true,
+        "url": "https://github.com/ChinemeremChigbo/maml-ppo.git"
+      },
+      {
+        "commit": "d61ddcfc43bb9a957ffab9132a5bb8f96c6e419f",
+        "dirty": true,
+        "url": "https://github.com/ChinemeremChigbo/maml-ppo.git"
+      },
+      {
+        "commit": "d61ddcfc43bb9a957ffab9132a5bb8f96c6e419f",
+        "dirty": true,
+        "url": "https://github.com/ChinemeremChigbo/maml-ppo.git"
+      },
+      {
+        "commit": "d61ddcfc43bb9a957ffab9132a5bb8f96c6e419f",
+        "dirty": true,
+        "url": "https://github.com/ChinemeremChigbo/maml-ppo.git"
+      },
+      {
+        "commit": "d61ddcfc43bb9a957ffab9132a5bb8f96c6e419f",
+        "dirty": true,
+        "url": "https://github.com/ChinemeremChigbo/maml-ppo.git"
+      },
+      {
+        "commit": "d61ddcfc43bb9a957ffab9132a5bb8f96c6e419f",
+        "dirty": true,
+        "url": "https://github.com/ChinemeremChigbo/maml-ppo.git"
+      },
+      {
+        "commit": "d61ddcfc43bb9a957ffab9132a5bb8f96c6e419f",
+        "dirty": true,
+        "url": "https://github.com/ChinemeremChigbo/maml-ppo.git"
+      },
+      {
+        "commit": "d61ddcfc43bb9a957ffab9132a5bb8f96c6e419f",
+        "dirty": true,
+        "url": "https://github.com/ChinemeremChigbo/maml-ppo.git"
+      },
+      {
+        "commit": "d61ddcfc43bb9a957ffab9132a5bb8f96c6e419f",
+        "dirty": true,
+        "url": "https://github.com/ChinemeremChigbo/maml-ppo.git"
+      },
+      {
+        "commit": "d61ddcfc43bb9a957ffab9132a5bb8f96c6e419f",
+        "dirty": true,
+        "url": "https://github.com/ChinemeremChigbo/maml-ppo.git"
+      },
+      {
+        "commit": "d61ddcfc43bb9a957ffab9132a5bb8f96c6e419f",
+        "dirty": true,
+        "url": "https://github.com/ChinemeremChigbo/maml-ppo.git"
+      },
+      {
+        "commit": "d61ddcfc43bb9a957ffab9132a5bb8f96c6e419f",
+        "dirty": true,
+        "url": "https://github.com/ChinemeremChigbo/maml-ppo.git"
+      }
+    ],
+    "sources": [
+      [
+        "env_2CAV_cooperation_20230319_benchmarks.py",
+        "_sources/env_2CAV_cooperation_20230319_benchmarks_1f3e4398157d23cde451ddf5d3363560.py"
+      ],
+      [
+        "test_2CAV_BFoptimal_Kaige.py",
+        "_sources/test_2CAV_BFoptimal_Kaige_f7691afb44952179f086fb1d97f8feda.py"
+      ],
+      [
+        "tf2marl/__init__.py",
+        "_sources/__init___d41d8cd98f00b204e9800998ecf8427e.py"
+      ],
+      [
+        "tf2marl/agents/AbstractAgent.py",
+        "_sources/AbstractAgent_5e310e09e103a6f9cb5136b3d97de903.py"
+      ],
+      [
+        "tf2marl/agents/__init__.py",
+        "_sources/__init___2767c6f5f56706e6a1694b45066e507e.py"
+      ],
+      [
+        "tf2marl/agents/mad3pg.py",
+        "_sources/mad3pg_4313ea96777f6e81892d76c42972a164.py"
+      ],
+      [
+        "tf2marl/agents/maddpg.py",
+        "_sources/maddpg_86f7bf6c37afee916e977c5855a52c96.py"
+      ],
+      [
+        "tf2marl/agents/maddpg_Kaige.py",
+        "_sources/maddpg_Kaige_91833d0701890c737fd14703eb3735b8.py"
+      ],
+      [
+        "tf2marl/agents/masac.py",
+        "_sources/masac_c0ccf35ac6c51846bcf5a3831069b4cc.py"
+      ],
+      [
+        "tf2marl/agents/matd3.py",
+        "_sources/matd3_877bd1b01d6f0f2684b6cdbe64bf01e5.py"
+      ],
+      [
+        "tf2marl/common/__init__.py",
+        "_sources/__init___d41d8cd98f00b204e9800998ecf8427e.py"
+      ],
+      [
+        "tf2marl/common/logger_benchmark_2.py",
+        "_sources/logger_benchmark_2_4c6befae5b4629188b553f01da6f63ce.py"
+      ],
+      [
+        "tf2marl/common/util.py",
+        "_sources/util_95d990052ee795870e29037b4e1ae4f5.py"
+      ],
+      [
+        "tf2marl/multiagent/__init__.py",
+        "_sources/__init___6a1d3733df5f9df1337616421e486a1c.py"
+      ],
+      [
+        "tf2marl/multiagent/environment.py",
+        "_sources/environment_792984f19674292454d691b3ebd0236e.py"
+      ]
+    ]
+  },
+  "heartbeat": "2023-07-08T17:42:08.052627",
+  "host": {
+    "ENV": {},
+    "cpu": "Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz",
+    "gpus": {
+      "driver_version": "527.56",
+      "gpus": [
+        {
+          "model": "NVIDIA GeForce GTX 1660 Ti",
+          "persistence_mode": true,
+          "total_memory": 6144
+        }
+      ]
+    },
+    "hostname": "DESKTOP-KLEDJ5B",
+    "os": [
+      "Linux",
+      "Linux-5.15.90.1-microsoft-standard-WSL2-x86_64-with-debian-bookworm-sid"
+    ],
+    "python_version": "3.7.16"
+  },
+  "meta": {
+    "command": "train",
+    "options": {
+      "--beat-interval": null,
+      "--capture": null,
+      "--comment": null,
+      "--debug": false,
+      "--enforce_clean": false,
+      "--file_storage": null,
+      "--force": false,
+      "--help": false,
+      "--loglevel": null,
+      "--mongo_db": null,
+      "--name": null,
+      "--pdb": false,
+      "--print-config": false,
+      "--priority": null,
+      "--queue": false,
+      "--s3": null,
+      "--sql": null,
+      "--tiny_db": null,
+      "--unobserved": false,
+      "COMMAND": null,
+      "UPDATE": [],
+      "help": false,
+      "with": false
+    }
+  },
+  "resources": [],
+  "result": null,
+  "start_time": "2023-07-08T17:42:02.137216",
+  "status": "INTERRUPTED",
+  "stop_time": "2023-07-08T17:42:08.065558"
+}

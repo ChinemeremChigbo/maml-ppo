@@ -108,19 +108,3 @@ venv.bak/
 
 # mypy
 .mypy_cache/
-
-data/*
-results/
-/.idea/
-.idea
-logs
-/logs/
-logs/
-./logs/
-./logs
-saves/
-/saves/
-saves
-./saves
-./saves/
-/videos/
