@@ -2,6 +2,11 @@
 
 This tutorial assumes a completely fresh installation of Ubuntu. To just run
 MAML TRPO start at "Create a Virtual environment" step.
+This repo is inspired by Moritz Schneider's implementation of MAML TRPO
+[schneimo/maml-rl-tf2](https://github.com/schneimo/maml-rl-tf2/) (TensorFlow) as
+well as the rlworkgroup's implementation of MAML PPO
+[rlworkgroup/garage](https://github.com/rlworkgroup/garage) (PyTorch /
+TensorFlow).
 
 ## Clone the Repo
 
