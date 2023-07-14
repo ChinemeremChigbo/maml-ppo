@@ -15,14 +15,30 @@ TensorFlow).
 sudo apt install git
 ```
 
-### Clone the Relevant `git` Repo
+### Configure your Git username
 ```bash
-git clone https://github.com/schneimo/maml-rl-tf2.git
+$ git config --global user.name "your_github_username"
+```
+
+### Configure your Git email
+```bash
+$ git config --global user.email "your_github_email"
+```
+
+### Create a Personal Access Token on GitHub
+From your GitHub account, go to Settings → Developer Settings → Personal Access
+Tokens (classic) → Fill out the Form →  Generate Token → Copy the
+generated Token, it will be something like 
+`ghp_randomly_generated_personal_access_token`
+
+### Git Clone Using Your Personal Access Token
+```bash
+git clone https://ghp_randomly_generated_personal_access_token@github.com/ChinemeremChigbo/maml-ppo.git
 ```
 
 ### Navigate into the `git` Repo Folder
 ```bash
-cd maml-rl-tf2/
+cd maml-ppo/
 ```
 
 ## Get `Python 3.7.17`
