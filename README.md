@@ -41,6 +41,11 @@ git clone https://ghp_randomly_generated_personal_access_token@github.com/Chinem
 cd maml-ppo/
 ```
 
+### Reload the Shell
+```bash
+sudo apt-get update
+```
+
 ## Get `Python 3.7.17`
 
 ### Install Curl
