@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.npy
+
 #Documentation
 *.html
 
@@ -108,5 +109,18 @@ venv.bak/
 
 # mypy
 .mypy_cache/
-
 /results
+/results/
+/.idea/
+.idea
+logs
+/logs/
+logs/
+./logs/
+./logs
+saves/
+/saves/
+saves
+./saves
+./saves/
+/videos/
