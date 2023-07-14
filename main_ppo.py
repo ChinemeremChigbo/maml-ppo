@@ -11,18 +11,17 @@ from garage.experiment import MetaEvaluator
 from garage.experiment.deterministic import set_seed
 from garage.experiment.task_sampler import SetTaskSampler
 from garage.sampler import RaySampler
-from maml_ppo import MAMLPPO
+from garage.torch.algos import MAMLPPO
 from garage.torch.policies import GaussianMLPPolicy
 from garage.torch.value_functions import GaussianMLPValueFunction
 from garage.trainer import Trainer
 
 
 @click.command()
-
 @click.option('--seed', default=1)
-@click.option('--epochs', default=2)
-@click.option('--episodes_per_task', default=5)
-@click.option('--meta_batch_size', default=2)
+@click.option('--epochs', default=300)
+@click.option('--episodes_per_task', default=40)
+@click.option('--meta_batch_size', default=20)
 @wrap_experiment(snapshot_mode='all')
 def maml_ppo_half_cheetah_dir(ctxt, seed, epochs, episodes_per_task,
                               meta_batch_size):
