@@ -1,7 +1,6 @@
 garage==2021.3.0
-mujoco_py==2.0.2.8
 wheel==0.40.0
-gym==0.17.2
+gym[mujoco]==0.17.2
 pytest==6.1.2
 sacred==0.8.1
 tensorboard==2.4.0
