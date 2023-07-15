@@ -138,7 +138,7 @@ mv mjkey.txt $HOME/.mujoco
 ### Update `~/.bashrc` with the Relevant Lines
 
 ```bash
-printf "%s\n" '' 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/.mujoco/mjpro150/bin' 'export PATH="$LD_LIBRARY_PATH:$PATH"' >> ~/.bashrc
+printf "%s\n" '' 'export LD_LIBRARY_PATH=$HOME/.mujoco/mjpro150/bin' 'export PATH="$LD_LIBRARY_PATH:$PATH"' >> ~/.bashrc
 ```
 
 ### Reload the `~/.bashrc`
@@ -168,9 +168,11 @@ source env3.7/bin/activate
 ```
 
 ### Install required packages
+
 ```bash
 pip install wheel cffi
 ```
+
 ## Edit the requirements
 
 ```bash
