@@ -38,8 +38,7 @@ $ git config --global user.email "your_github_email"
 ### Create a Personal Access Token on GitHub
 
 From your GitHub account, go to Settings → Developer Settings → Personal Access
-Tokens (classic) → Fill out the Form → Generate Token → Copy the
-generated Token, it will be something like
+Tokens → Tokens (Classic) → Generate New Token → Generate New Token (Classic) →  Select scope of "repo" → Fill out the Remainder of the Form  → Generate Token → Copy the Generated Token, it will be something like
 `ghp_randomly_generated_personal_access_token`
 
 ### Git Clone Using your Personal Access Token
