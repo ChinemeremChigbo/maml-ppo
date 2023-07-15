@@ -10,6 +10,12 @@ TensorFlow).
 
 ## Clone the Repo
 
+### Update `apt` Packages
+
+```bash
+sudo apt update
+```
+
 ### Use `apt` to Install `git`
 
 ```bash
@@ -45,12 +51,6 @@ git clone https://ghp_randomly_generated_personal_access_token@github.com/Chinem
 
 ```bash
 cd maml-ppo/
-```
-
-### Update `apt` Packages
-
-```bash
-sudo apt update
 ```
 
 ## Get `Python 3.7.17`
@@ -138,9 +138,8 @@ mv mjkey.txt $HOME/.mujoco
 ### Update `~/.bashrc` with the Relevant Lines
 
 ```bash
-printf "%s\n" '' 'export LD_LIBRARY_PATH= $HOME/.mujoco/mjpro150/bin${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}' 'export MUJOCO_KEY_PATH= $HOME/.mujoco${MUJOCO_KEY_PATH}' >> ~/.bashrc
+printf "%s\n" '' 'export LD_LIBRARY_PATH=$HOME/.mujoco/mjpro150/bin' 'export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python' >> ~/.bashrc
 ```
-
 
 ### Reload the `~/.bashrc`
 
@@ -177,7 +176,7 @@ pip install wheel cffi
 ## Edit the requirements
 
 ```bash
-printf "%s\n" "garage==2021.3.0" "wheel==0.40.0" "gym[mujoco]==0.17.2" "pytest==6.1.2" "sacred==0.8.1" "tensorboard==2.4.0" "tensorflow==2.3.1" "tensorflow-estimator==2.3.0" "coverage==5.3" "scipy==1.7.3" "matplotlib==3.5.3" "pandas==1.3.5" "sympy==1.10.1" > requirements.txt
+printf "%s\n" "garage==2021.3.0" "wheel==0.40.0" "gym[mujoco]==0.17.2" "pytest==6.1.2" "sacred==0.8.1" "tensorboard==2.4.0" "tensorflow==2.3.1" "tensorflow-estimator==2.3.0" "coverage==5.3" "scipy==1.7.3" "matplotlib==3.5.3" "pandas==1.3.5" "sympy==1.10.1" "pygame==2.5.0" > requirements.txt
 ```
 
 ### Install the Given Requirements
@@ -186,16 +185,10 @@ printf "%s\n" "garage==2021.3.0" "wheel==0.40.0" "gym[mujoco]==0.17.2" "pytest==
 python3 -m pip install -r requirements.txt
 ```
 
-### Use Pure-Python Parsing for Protocol Buffers
-
-```bash
-export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
-```
-
 ### Run the `main_trpo.py` File
 
 ```bash
-python3 main_trpo.py --env-name 2DNavigation-v0 --num-workers 20 --fast-lr 0.1 --max-kl 0.01 --fast-batch-size 20 --meta-batch-size 40 --num-layers 2 --hidden-size 100 --num-batches 500 --gamma 0.99 --tau 1.0 --cg-damping 1e-5 --ls-max-steps 15
+python3 main_trpo.py --env-name HalfCheetahDir-v1 --num-workers 20 --fast-lr 0.1 --max-kl 0.01 --fast-batch-size 5 --meta-batch-size 10 --num-layers 2 --hidden-size 100 --num-batches 3 --gamma 0.99 --tau 1.0 --cg-damping 1e-5 --ls-max-steps 10 --save-iters 1
 ```
 
 ### Run the `main_ppo.py` File
