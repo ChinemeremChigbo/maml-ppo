@@ -155,7 +155,7 @@ python3 -m venv env3.7
 source env3.7/bin/activate
 ```
 
-### Install required packages
+### Install wheel
 
 ```bash
 pip install wheel
