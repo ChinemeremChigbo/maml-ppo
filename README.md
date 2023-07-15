@@ -26,8 +26,7 @@ sudo apt install git
 ### Create a Personal Access Token on GitHub
 
 From your GitHub account, go to Settings → Developer Settings → Personal Access
-Tokens (classic) → Fill out the Form → Generate Token → Copy the
-generated Token, it will be something like
+Tokens → Tokens (Classic) → Generate New Token → Generate New Token (Classic) →  Select scope of "repo" → Fill out the Remainder of the Form  → Generate Token → Copy the Generated Token, it will be something like
 `ghp_randomly_generated_personal_access_token`
 
 ### Git Clone Using your Personal Access Token
@@ -79,7 +78,7 @@ pyenv install 3.7.17
 ### Install `mujoco` Requirements
 
 ```bash
-sudo apt install patchelf unzip libosmesa6-dev libgl1-mesa-glx libglfw3
+sudo apt install ffmpeg patchelf unzip libosmesa6-dev libgl1-mesa-glx libglfw3
 ```
 
 ### Download `mujoco150`
@@ -159,14 +158,9 @@ source env3.7/bin/activate
 ### Install required packages
 
 ```bash
-pip install wheel cffi
+pip install wheel cffi numpy
 ```
-
-## Edit the requirements
-
-```bash
-printf "%s\n" "garage==2021.3.0" "wheel==0.40.0" "gym[mujoco]==0.17.2" "pytest==6.1.2" "sacred==0.8.1" "tensorboard==2.4.0" "tensorflow==2.3.1" "tensorflow-estimator==2.3.0" "coverage==5.3" "scipy==1.7.3" "matplotlib==3.5.3" "pandas==1.3.5" "sympy==1.10.1" "pygame==2.5.0" > requirements.txt
-```
+## Run the Relevant `Python` File
 
 ### Install the Given Requirements
 
@@ -174,12 +168,10 @@ printf "%s\n" "garage==2021.3.0" "wheel==0.40.0" "gym[mujoco]==0.17.2" "pytest==
 python3 -m pip install -r requirements.txt
 ```
 
-### Run the Relevant `Python` File
-
 ### Run the `main_trpo.py` File
 
 ```bash
-python3 main_trpo.py --env-name HalfCheetahDir-v1 --num-workers 20 --fast-lr 0.1 --max-kl 0.01 --fast-batch-size 5 --meta-batch-size 10 --num-layers 2 --hidden-size 100 --num-batches 3 --gamma 0.99 --tau 1.0 --cg-damping 1e-5 --ls-max-steps 10 --save-iters 1
+python3 main_trpo.py --env-name HalfCheetahDir-v1 --num-workers 20 --fast-lr 0.1 --max-kl 0.01 --fast-batch-size 5 --meta-batch-size 10 --num-layers 2 --hidden-size 100 --num-batches 1 --gamma 0.99 --tau 1.0 --cg-damping 1e-5 --ls-max-steps 10 --save-iters 1
 ```
 
 ### Run the `experiments.py` File
