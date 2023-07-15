@@ -43,14 +43,14 @@ cd maml-ppo/
 
 ### Reload the Shell
 ```bash
-sudo apt-get update
+sudo apt update
 ```
 
 ## Get `Python 3.7.17`
 
 ### Install `Python` Requirements
 ```bash
-sudo apt-get install curl build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+sudo apt install curl build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 ```
 ### Curl `pyenv` from Using `bash`
 ```bash
@@ -72,8 +72,9 @@ exec "$SHELL"
 ```bash
 sudo pyenv install 3.7.17
 ```
-## Download `mujoco150`
+## Get `mujoco150`
 
+### Download `mujoco150`
 ```bash
 wget https://www.roboti.us/download/mjpro150_linux.zip
 ```
@@ -83,7 +84,7 @@ wget https://www.roboti.us/download/mjpro150_linux.zip
 wget https://www.roboti.us/file/mjkey.txt
 ```
 
-### Install mujoco prerequisites
+### Install mujoco requirements
 ```bash
 sudo apt install unzip libosmesa6-dev libgl1-mesa-glx libglfw3
 ```
