@@ -11,11 +11,11 @@ TensorFlow).
 ```bash
 sudo apt install git
 ```
-### Configure your Git username
+### Configure your `Git` Username
 ```bash
 $ git config --global user.name "your_github_username"
 ```
-### Configure your Git email
+### Configure your `Git` Email
 ```bash
 $ git config --global user.email "your_github_email"
 ```
@@ -24,7 +24,7 @@ From your GitHub account, go to Settings → Developer Settings → Personal Acc
 Tokens (classic) → Fill out the Form →  Generate Token → Copy the
 generated Token, it will be something like 
 `ghp_randomly_generated_personal_access_token`
-### Git Clone Using Your Personal Access Token
+### Git Clone Using your Personal Access Token
 ```bash
 git clone https://ghp_randomly_generated_personal_access_token@github.com/ChinemeremChigbo/maml-ppo.git
 ```
@@ -32,7 +32,7 @@ git clone https://ghp_randomly_generated_personal_access_token@github.com/Chinem
 ```bash
 cd maml-ppo/
 ```
-### Reload the Shell
+### Update `apt` Packages
 ```bash
 sudo apt update
 ```
@@ -58,7 +58,7 @@ exec "$SHELL"
 sudo pyenv install 3.7.17
 ```
 ## Get `mujoco150`
-### Install mujoco requirements
+### Install `mujoco` Requirements
 ```bash
 sudo apt install unzip libosmesa6-dev libgl1-mesa-glx libglfw3
 ```
@@ -66,7 +66,7 @@ sudo apt install unzip libosmesa6-dev libgl1-mesa-glx libglfw3
 ```bash
 wget https://www.roboti.us/download/mjpro150_linux.zip
 ```
-### Download the mujoco license
+### Download the `mujoco` license
 ```bash
 wget https://www.roboti.us/file/mjkey.txt
 ```
@@ -78,8 +78,8 @@ unzip mjpro150_linux.zip
 ```bash
 rm mjpro150_linux.zip
 ```
-### Make a mujoco directory in the current user's folder
-**The following commands assume $USER is the current user**
+### Make a `mujoco` directory in the current user's folder
+**The following commands assume `$USER` is the current user**
 ```bash
 mkdir /home/$USER/.mujoco
 ```
@@ -87,7 +87,7 @@ mkdir /home/$USER/.mujoco
 ```bash
 mv mjpro150 /home/$USER/.mujoco
 ```
-### Move the mujoco license to the mujoco folder
+### Move the `mujoco` License to the `mujoco` Folder
 ```bash
 mv mjkey.txt /home/$USER/.mujoco
 ```
