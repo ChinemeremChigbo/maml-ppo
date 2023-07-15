@@ -138,7 +138,7 @@ mv mjkey.txt $HOME/.mujoco
 ### Update `~/.bashrc` with the Relevant Lines
 
 ```bash
-printf "%s\n" '' 'export LD_LIBRARY_PATH= $HOME/.mujoco/mjpro150/bin'${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}' 'export MUJOCO_KEY_PATH= $HOME/.mujoco${MUJOCO_KEY_PATH}' >> ~/.bashrc
+printf "%s\n" '' 'export LD_LIBRARY_PATH= $HOME/.mujoco/mjpro150/bin${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}' 'export MUJOCO_KEY_PATH= $HOME/.mujoco${MUJOCO_KEY_PATH}' >> ~/.bashrc
 ```
 
 
