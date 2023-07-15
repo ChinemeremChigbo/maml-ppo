@@ -23,18 +23,6 @@ sudo apt update
 sudo apt install git
 ```
 
-### Configure your `Git` Username
-
-```bash
-$ git config --global user.name "your_github_username"
-```
-
-### Configure your `Git` Email
-
-```bash
-$ git config --global user.email "your_github_email"
-```
-
 ### Create a Personal Access Token on GitHub
 
 From your GitHub account, go to Settings → Developer Settings → Personal Access
