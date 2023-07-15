@@ -90,7 +90,7 @@ pyenv install 3.7.17
 ### Install `mujoco` Requirements
 
 ```bash
-sudo apt install unzip libosmesa6-dev libgl1-mesa-glx libglfw3
+sudo apt install patchelf unzip libosmesa6-dev libgl1-mesa-glx libglfw3
 ```
 
 ### Download `mujoco150`
