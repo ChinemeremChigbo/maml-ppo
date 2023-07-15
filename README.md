@@ -48,11 +48,10 @@ sudo apt-get update
 
 ## Get `Python 3.7.17`
 
-### Install Curl
+### Install `Python` Requirements
 ```bash
-sudo apt install curl
+sudo apt-get install curl build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 ```
-
 ### Curl `pyenv` from Using `bash`
 ```bash
 curl https://pyenv.run | bash
@@ -60,7 +59,7 @@ curl https://pyenv.run | bash
 
 ### Update `~/.bashrc` with the Relevant Lines
 ```bash
-printf 'export PATH="$HOME/.pyenv/bin:$PATH"\neval "$(pyenv init -)"\neval "$(pyenv virtualenv-init -)"' >> ~/.bashrc
+printf "%s\n" 'export PATH="$HOME/.pyenv/bin:$PATH"' 'eval "$(pyenv init -)"' 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc
 ```
 
 ### Reload the Shell
@@ -68,10 +67,6 @@ printf 'export PATH="$HOME/.pyenv/bin:$PATH"\neval "$(pyenv init -)"\neval "$(py
 exec "$SHELL"
 ```
 
-### Install `Python` Requirements
-```bash
-sudo apt-get install build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
-```
 
 ### Install `Python 3.7.17`
 ```bash
