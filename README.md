@@ -169,6 +169,10 @@ python3 -m venv env3.7
 source env3.7/bin/activate
 ```
 
+### Install required packages
+```bash
+pip install wheel cffi
+```
 ## Edit the requirements
 
 ```bash
