@@ -119,28 +119,26 @@ rm mjpro150_linux.zip
 
 ### Make a `mujoco` directory in the current user's folder
 
-**The following commands assume `$USER` is the current user**
-
 ```bash
-mkdir /home/$USER/.mujoco
+mkdir $HOME/.mujoco
 ```
 
 ### Move `mujoco150` to the mujoco folder
 
 ```bash
-mv mjpro150 /home/$USER/.mujoco
+mv mjpro150 $HOME/.mujoco
 ```
 
 ### Move the `mujoco` License to the `mujoco` Folder
 
 ```bash
-mv mjkey.txt /home/$USER/.mujoco
+mv mjkey.txt $HOME/.mujoco
 ```
 
 ### Update `~/.bashrc` with the Relevant Lines
 
 ```bash
-printf "%s\n" '' 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/chinemerem/.mujoco/mjpro150/bin' >> ~/.bashrc
+printf "%s\n" '' 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/.mujoco/mjpro150/bin' 'export PATH="$LD_LIBRARY_PATH:$PATH"' >> ~/.bashrc
 ```
 
 ### Reload the `~/.bashrc`
