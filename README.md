@@ -158,7 +158,7 @@ source env3.7/bin/activate
 ### Install wheel
 
 ```bash
-pip install wheel
+pip install wheel==0.40.0
 ```
 ## Run the Relevant `Python` File
 
