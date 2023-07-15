@@ -158,7 +158,7 @@ source env3.7/bin/activate
 ### Install required packages
 
 ```bash
-pip install wheel cffi numpy
+pip install wheel
 ```
 ## Run the Relevant `Python` File
 
