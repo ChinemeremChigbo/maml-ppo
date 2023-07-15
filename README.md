@@ -70,19 +70,19 @@ curl https://pyenv.run | bash
 ### Update `~/.bashrc` with the Relevant Lines
 
 ```bash
-printf "%s\n" 'export PATH="$HOME/.pyenv/bin:$PATH"' 'eval "$(pyenv init -)"' 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc
+printf "%s\n" '' 'export PATH="$HOME/.pyenv/bin:$PATH"' 'eval "$(pyenv init -)"' 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc
 ```
 
-### Reload the Shell
+### Reload the `~/.bashrc`
 
 ```bash
-exec "$SHELL"
+source ~/.bashrc
 ```
 
 ### Install `Python 3.7.17`
 
 ```bash
-sudo pyenv install 3.7.17
+pyenv install 3.7.17
 ```
 
 ## Get `mujoco150`
@@ -140,13 +140,13 @@ mv mjkey.txt /home/$USER/.mujoco
 ### Update `~/.bashrc` with the Relevant Lines
 
 ```bash
-printf 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/chinemerem/.mujoco/mjpro150/bin' >> ~/.bashrc
+printf "%s\n" '' 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/chinemerem/.mujoco/mjpro150/bin' >> ~/.bashrc
 ```
 
-### Reload the Shell
+### Reload the `~/.bashrc`
 
 ```bash
-exec "$SHELL"
+source ~/.bashrc
 ```
 
 ## Create a Virtual Environment
