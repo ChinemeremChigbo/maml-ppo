@@ -90,7 +90,7 @@ pyenv install 3.7.17
 ### Install `mujoco` Requirements
 
 ```bash
-sudo apt install patchelf unzip libosmesa6-dev libgl1-mesa-glx libglfw3
+sudo apt install ffmpeg patchelf unzip libosmesa6-dev libgl1-mesa-glx libglfw3
 ```
 
 ### Download `mujoco150`
@@ -170,7 +170,7 @@ source env3.7/bin/activate
 ### Install required packages
 
 ```bash
-pip install wheel cffi
+pip install wheel cffi numpy
 ```
 ## Run the Relevant `Python` File
 
@@ -183,7 +183,7 @@ python3 -m pip install -r requirements.txt
 ### Run the `main_trpo.py` File
 
 ```bash
-python3 main_trpo.py --env-name HalfCheetahDir-v1 --num-workers 20 --fast-lr 0.1 --max-kl 0.01 --fast-batch-size 5 --meta-batch-size 10 --num-layers 2 --hidden-size 100 --num-batches 3 --gamma 0.99 --tau 1.0 --cg-damping 1e-5 --ls-max-steps 10 --save-iters 1
+python3 main_trpo.py --env-name HalfCheetahDir-v1 --num-workers 20 --fast-lr 0.1 --max-kl 0.01 --fast-batch-size 5 --meta-batch-size 10 --num-layers 2 --hidden-size 100 --num-batches 1 --gamma 0.99 --tau 1.0 --cg-damping 1e-5 --ls-max-steps 10 --save-iters 1
 ```
 
 ### Run the `experiments.py` File
