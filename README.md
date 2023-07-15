@@ -172,20 +172,13 @@ source env3.7/bin/activate
 ```bash
 pip install wheel cffi
 ```
-
-## Edit the requirements
-
-```bash
-printf "%s\n" "garage==2021.3.0" "wheel==0.40.0" "gym[mujoco]==0.17.2" "pytest==6.1.2" "sacred==0.8.1" "tensorboard==2.4.0" "tensorflow==2.3.1" "tensorflow-estimator==2.3.0" "coverage==5.3" "scipy==1.7.3" "matplotlib==3.5.3" "pandas==1.3.5" "sympy==1.10.1" "pygame==2.5.0" > requirements.txt
-```
+## Run the Relevant `Python` File
 
 ### Install the Given Requirements
 
 ```bash
 python3 -m pip install -r requirements.txt
 ```
-
-### Run the Relevant `Python` File
 
 ### Run the `main_trpo.py` File
 
