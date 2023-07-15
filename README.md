@@ -2,7 +2,7 @@
 
 This tutorial assumes a completely fresh installation of Ubuntu. If dependencies
 are already installed then simply run the "Activate Virtual Environment",
-"Install the Given Requirements", anf "Run the Relevant `Python` File" steps.
+"Install the Given Requirements", and "Run the Relevant `Python` File" steps.
 This repo is inspired by Moritz Schneider's implementation of MAML TRPO
 [schneimo/maml-rl-tf2](https://github.com/schneimo/maml-rl-tf2/) (TensorFlow) as
 well as the rlworkgroup's implementation of MAML PPO
@@ -26,7 +26,7 @@ sudo apt install git
 ### Create a Personal Access Token on GitHub
 
 From your GitHub account, go to Settings → Developer Settings → Personal Access
-Tokens → Tokens (Classic) → Generate New Token → Generate New Token (Classic) →  Select scope of "repo" → Fill out the Remainder of the Form  → Generate Token → Copy the Generated Token, it will be something like
+Tokens → Tokens (Classic) → Generate New Token → Generate New Token (Classic) → Add a relevant "Note" → Select Scope of "Repo" → Fill out the Remainder of the Form  → Generate Token → Copy the Generated Token, it will be something like
 `ghp_randomly_generated_personal_access_token`
 
 ### Git Clone Using your Personal Access Token
