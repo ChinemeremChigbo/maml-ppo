@@ -1,4 +1,4 @@
-# Running Reinforcement Learning with Model-Agnostic Meta-Learning (MAML) in TensorFlow 2 (TF2) from Scratch
+# Running Reinforcement Learning with Model-Agnostic Meta-Learning (MAML) TRPO and PPO
 
 This tutorial assumes a completely fresh installation of Ubuntu. To just run,
 start at "Create a Virtual environment" step.
