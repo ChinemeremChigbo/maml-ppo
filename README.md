@@ -1,7 +1,8 @@
 # Running Reinforcement Learning with Model-Agnostic Meta-Learning (MAML) TRPO and PPO
 
-This tutorial assumes a completely fresh installation of Ubuntu. To just run,
-start at "Create a Virtual environment" step.
+This tutorial assumes a completely fresh installation of Ubuntu. If dependencies
+are already installed then simply run the "Activate Virtual Environment",
+"Install the Given Requirements", anf "Run the Relevant `Python` File" steps.
 This repo is inspired by Moritz Schneider's implementation of MAML TRPO
 [schneimo/maml-rl-tf2](https://github.com/schneimo/maml-rl-tf2/) (TensorFlow) as
 well as the rlworkgroup's implementation of MAML PPO
@@ -184,11 +185,18 @@ printf "%s\n" "garage==2021.3.0" "wheel==0.40.0" "gym[mujoco]==0.17.2" "pytest==
 ```bash
 python3 -m pip install -r requirements.txt
 ```
+### Run the Relevant `Python` File
 
 ### Run the `main_trpo.py` File
 
 ```bash
 python3 main_trpo.py --env-name HalfCheetahDir-v1 --num-workers 20 --fast-lr 0.1 --max-kl 0.01 --fast-batch-size 5 --meta-batch-size 10 --num-layers 2 --hidden-size 100 --num-batches 3 --gamma 0.99 --tau 1.0 --cg-damping 1e-5 --ls-max-steps 10 --save-iters 1
+```
+
+### Run the `experiments.py` File
+
+```bash
+python3 experiments.py
 ```
 
 ### Run the `main_ppo.py` File
