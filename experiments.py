@@ -9,24 +9,21 @@ GlfwContext(offscreen=True)  # Create a window to init GLFW.
 from maml_rl.policies.normal_mlp import NormalMLPPolicy
 from maml_rl.baselines.linear_baseline import LinearFeatureBaseline
 from maml_rl.sampler import BatchSampler
-from maml_rl.metalearners.maml_trpo import TRPOMetaLearner
+from maml_rl.metalearners.maml_trpo import MetaLearner
 
-ITR = 991
+ITR = 1
 GRAD_STEPS = [0, 1]
 EVAL_STEPS = 10
 
 ENV_NAME = "HalfCheetahDir-v1"
-ENV_PREFIX = "halfcheetah-dir"
 
-META_POLICY_PATH = f"saves/maml-{ENV_PREFIX}/policy-{ITR}"
-BASELINE_PATH = f"saves/maml-{ENV_PREFIX}/baseline-{ITR}"
+META_POLICY_PATH = f"saves/maml/policy-{ITR}"
+BASELINE_PATH = f"saves/maml/baseline-{ITR}"
 
 directions = 2 * np_random.binomial(1, p=0.5, size=(1,)) - 1
 TEST_TASKS = [{'direction': direction} for direction in directions]
 
 GOALS = np.array([[0.3, 0.2]])
-#TEST_TASKS = [{'goal': goal} for goal in GOALS]
-
 
 def load_meta_learner_params(policy_path, baseline_path, env):
 
@@ -70,10 +67,10 @@ def evaluate(env, task, policy):
 
 def main():
     env = gym.make(ENV_NAME)
-    env = Monitor(env, f"./videos/{ENV_PREFIX}", force=True)
+    env = Monitor(env, f"./videos", force=True)
     policy, baseline = load_meta_learner_params(META_POLICY_PATH, BASELINE_PATH, env)
     sampler = BatchSampler(env_name=ENV_NAME, batch_size=20, num_workers=2)
-    learner = TRPOMetaLearner(sampler, policy, baseline, optimizer=None)
+    learner = MetaLearner(sampler, policy, baseline, optimizer=None)
 
     for task in TEST_TASKS:
         returns = []
