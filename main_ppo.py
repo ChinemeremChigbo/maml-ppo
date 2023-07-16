@@ -15,6 +15,8 @@ from garage.torch.algos import MAMLPPO
 from garage.torch.policies import GaussianMLPPolicy
 from garage.torch.value_functions import GaussianMLPValueFunction
 from garage.trainer import Trainer
+# from maml_rl.envs.mujoco.half_cheetah import HalfCheetahEnv
+from cav_environment import CAVEnv
 
 
 @click.command()
