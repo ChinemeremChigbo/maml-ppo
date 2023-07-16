@@ -15,17 +15,16 @@ from garage.torch.algos import MAMLPPO
 from garage.torch.policies import GaussianMLPPolicy
 from garage.torch.value_functions import GaussianMLPValueFunction
 from garage.trainer import Trainer
-# from maml_rl.envs.mujoco.half_cheetah import HalfCheetahEnv
-from cav_environment import CAVEnv
+from cav_environment import CAVVelEnv
 
 
 @click.command()
 @click.option('--seed', default=1)
-@click.option('--epochs', default=300)
-@click.option('--episodes_per_task', default=40)
-@click.option('--meta_batch_size', default=20)
+@click.option('--epochs', default=5)
+@click.option('--episodes_per_task', default=3)
+@click.option('--meta_batch_size', default=3)
 @wrap_experiment(snapshot_mode='all')
-def maml_ppo_half_cheetah_dir(ctxt, seed, epochs, episodes_per_task,
+def main(ctxt, seed, epochs, episodes_per_task,
                               meta_batch_size):
     """Set up environment and algorithm and run the task.
 
@@ -41,32 +40,30 @@ def maml_ppo_half_cheetah_dir(ctxt, seed, epochs, episodes_per_task,
 
     """
     set_seed(seed)
-    max_episode_length = 100
-    env = normalize(GymEnv(HalfCheetahDirEnv(),
-                           max_episode_length=max_episode_length),
+    max_episode_length = 5
+    env = normalize(CAVVelEnv(max_episode_length=max_episode_length),
                     expected_action_scale=10.)
 
     policy = GaussianMLPPolicy(
         env_spec=env.spec,
-        hidden_sizes=(64, 64),
+        hidden_sizes=(16, 16),
         hidden_nonlinearity=torch.tanh,
         output_nonlinearity=None,
     )
 
     value_function = GaussianMLPValueFunction(env_spec=env.spec,
-                                              hidden_sizes=(32, 32),
+                                              hidden_sizes=(8, 8),
                                               hidden_nonlinearity=torch.tanh,
                                               output_nonlinearity=None)
-
-    task_sampler = SetTaskSampler(
-        HalfCheetahDirEnv,
-        wrapper=lambda env, _: normalize(GymEnv(
-            env, max_episode_length=max_episode_length),
-                                         expected_action_scale=10.))
+    def set_length(env, _task):
+        env.close()
+        return CAVVelEnv(max_episode_length=env.spec.max_episode_length)
+    
+    task_sampler = SetTaskSampler(CAVVelEnv, wrapper=set_length)
 
     meta_evaluator = MetaEvaluator(test_task_sampler=task_sampler,
                                    n_test_tasks=2,
-                                   n_test_episodes=10)
+                                   n_test_episodes=2)
 
     trainer = Trainer(ctxt)
 
@@ -91,4 +88,4 @@ def maml_ppo_half_cheetah_dir(ctxt, seed, epochs, episodes_per_task,
                   batch_size=episodes_per_task * env.spec.max_episode_length)
 
 
-maml_ppo_half_cheetah_dir()
+main()
