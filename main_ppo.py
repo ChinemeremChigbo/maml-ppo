@@ -57,7 +57,7 @@ def main(ctxt, seed, epochs, episodes_per_task,
                                               output_nonlinearity=None)
     def set_length(env, _task):
         env.close()
-        return CAVVelEnv(max_episode_length=env.spec.max_episode_length)
+        return CAVVelEnv(max_episode_length=max_episode_length)
     
     task_sampler = SetTaskSampler(CAVVelEnv, wrapper=set_length)
 
