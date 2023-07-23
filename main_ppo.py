@@ -21,7 +21,7 @@ from cav_environment import CAVVelEnv
 @click.command()
 @click.option('--seed', default=1)
 @click.option('--epochs', default=5)
-@click.option('--episodes_per_task', default=3)
+@click.option('--episodes_per_task', default=4)
 @click.option('--meta_batch_size', default=3)
 @wrap_experiment(snapshot_mode='all')
 def main(ctxt, seed, epochs, episodes_per_task,
@@ -57,7 +57,7 @@ def main(ctxt, seed, epochs, episodes_per_task,
                                               output_nonlinearity=None)
     def set_length(env, _task):
         env.close()
-        return CAVVelEnv(max_episode_length=max_episode_length)
+        return normalize(CAVVelEnv(max_episode_length=max_episode_length))
     
     task_sampler = SetTaskSampler(CAVVelEnv, wrapper=set_length)
 
@@ -69,7 +69,7 @@ def main(ctxt, seed, epochs, episodes_per_task,
 
     sampler = RaySampler(agents=policy,
                          envs=env,
-                         max_episode_length=env.spec.max_episode_length)
+                         max_episode_length=max_episode_length)
 
     algo = MAMLPPO(env=env,
                    policy=policy,
@@ -85,7 +85,7 @@ def main(ctxt, seed, epochs, episodes_per_task,
 
     trainer.setup(algo, env)
     trainer.train(n_epochs=epochs,
-                  batch_size=episodes_per_task * env.spec.max_episode_length)
+                  batch_size=episodes_per_task * max_episode_length)
 
 
 main()

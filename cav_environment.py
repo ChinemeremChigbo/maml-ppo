@@ -12,6 +12,7 @@ from gym import spaces
 
 """Simple 2D environment containing a point and a goal location."""
 
+
 class CAVVelEnv(Environment):
     """A simple 2D point environment.
 
@@ -28,18 +29,16 @@ class CAVVelEnv(Environment):
     """
 
     def __init__(self,
-                 goal=np.array((1., 1.), dtype=np.float32),
-                 arena_size=5.,
-                 done_bonus=0.,
+                 goal=np.array([7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+                                6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+                                5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+                                6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+                                7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]),
                  never_done=False,
                  max_episode_length=math.inf):
         goal = np.array(goal, dtype=np.float32)
         self._goal = goal
-        self._done_bonus = done_bonus
         self._never_done = never_done
-        self._arena_size = arena_size
-
-        assert ((goal >= -arena_size) & (goal <= arena_size)).all()
 
         self._step_cnt = None
         self._max_episode_length = max_episode_length
@@ -49,8 +48,9 @@ class CAVVelEnv(Environment):
         self._task = {'goal': self._goal}
         self._observation_space = akro.Box(low=-np.inf,
                                            high=np.inf,
-                                           shape=(3, ),
+                                           shape=(6, ),
                                            dtype=np.float32)
+        print("self.obs", self._observation_space)
         self._action_space = akro.Box(low=-0.1,
                                       high=0.1,
                                       shape=(2, ),
@@ -58,100 +58,98 @@ class CAVVelEnv(Environment):
         self._spec = EnvSpec(action_space=self.action_space,
                              observation_space=self.observation_space,
                              max_episode_length=max_episode_length)
-        # #########################################################################################################################
+        #########################################################################################################################
 
-        # self.infeasible_penalty = -10
+        self.infeasible_penalty = -10
 
-        # ##################################### DNN model parameters ###############################################################
-        # # computing demnad (in cycles) for feature extraction
-        # self.delta_1 = 120268800/30
-        # # computing demnad (in cycles) for feature fusion
-        # self.delta_2 = 1000/30
-        # # computing demnad (in cycles) for fast inference
-        # self.delta_3 = 9255020/30
-        # # computing demnad (in cycles) for full inference
-        # self.delta_4 = 2.3000e+09/30
+        ##################################### DNN model parameters ###############################################################
+        # computing demnad (in cycles) for feature extraction
+        self.delta_1 = 120268800/30
+        # computing demnad (in cycles) for feature fusion
+        self.delta_2 = 1000/30
+        # computing demnad (in cycles) for fast inference
+        self.delta_3 = 9255020/30
+        # computing demnad (in cycles) for full inference
+        self.delta_4 = 2.3000e+09/30
 
-        # self.rho = 0.3  # Average early exit ratio in the default DNN model
-        # self.rho_tilde = 0.6  # Average early exit ratio in the data-fusion DNN model
+        self.rho = 0.3  # Average early exit ratio in the default DNN model
+        self.rho_tilde = 0.6  # Average early exit ratio in the data-fusion DNN model
 
-        # self.w = 295936  # feature data size (in bit)
+        self.w = 295936  # feature data size (in bit)
 
-        # self.Delta = 0.1  # Delay requirement in s, i.e., 100ms
+        self.Delta = 0.1  # Delay requirement in s, i.e., 100ms
 
-        # ##
-        # self.kappa = 1e-28
-        # self.delta = self.delta_1 + self.delta_3 + (1-self.rho) * self.delta_4
-        # self.delta_tilde = 2*self.delta_1 + self.delta_2 + \
-        #     self.delta_3 + (1-self.rho_tilde) * self.delta_4
-        # self.delta_hat = self.delta_1 + self.delta_2 + \
-        #     self.delta_3 + (1-self.rho_tilde) * self.delta_4
+        ##
+        self.kappa = 1e-28
+        self.delta = self.delta_1 + self.delta_3 + (1-self.rho) * self.delta_4
+        self.delta_tilde = 2*self.delta_1 + self.delta_2 + \
+            self.delta_3 + (1-self.rho_tilde) * self.delta_4
+        self.delta_hat = self.delta_1 + self.delta_2 + \
+            self.delta_3 + (1-self.rho_tilde) * self.delta_4
 
-        # ##
-        # self.w_new = self.w/1e6*500
-        # self.delta_hat_new = self.delta_hat/1e9*500
-        # self.Delta_new = self.Delta*500
+        ##
+        self.w_new = self.w/1e6*500
+        self.delta_hat_new = self.delta_hat/1e9*500
+        self.Delta_new = self.Delta*500
 
-        # self.varphi = np.sqrt(2*np.power(self.delta, 3) /
-        #                       (np.power(self.delta_hat, 2)*self.delta_tilde))
+        self.varphi = np.sqrt(2*np.power(self.delta, 3) /
+                              (np.power(self.delta_hat, 2)*self.delta_tilde))
 
-        # ############################################### Communication parameters #################################################
-        # self.noise_power = np.power(10, -104/10)/1000  # -104dBm
+        ############################################### Communication parameters #################################################
+        self.noise_power = np.power(10, -104/10)/1000  # -104dBm
 
-        # self.Transmit_power = np.power(10, 23/10)/1000  # 23dBm
+        self.Transmit_power = np.power(10, 23/10)/1000  # 23dBm
 
-        # self.Interference_constant = 0
+        self.Interference_constant = 0
 
-        # self.bandwidth_basis = [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-        #                         6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-        #                         5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
-        #                         6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-        #                         7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]  # *1000000
+        self.bandwidth_basis = [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+                                6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+                                5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+                                6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+                                7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]  # *1000000
 
-        # self.f_center = 6  # Ghz
+        self.f_center = 6  # Ghz
 
-        # self.episode_length = 75
+        self.switch_coeff = 0.4
 
-        # self.switch_coeff = 0.4
+        ############################################### optimal resource allocation ###################################
 
-        # ############################################### optimal resource allocation ###################################
+        self.obj_opt_2CAV = np.squeeze(sio.loadmat(
+            'KKT_opt/KKT_2CAV_opt_data.mat').get('KKT_obj_2CAV'))
+        self.obj_opt_1CAV = np.squeeze(sio.loadmat(
+            'KKT_opt/KKT_1CAV_opt_data.mat').get('KKT_obj_1CAV'))
 
-        # self.obj_opt_2CAV = np.squeeze(sio.loadmat(
-        #     'KKT_opt/KKT_2CAV_opt_data.mat').get('KKT_obj_2CAV'))
-        # self.obj_opt_1CAV = np.squeeze(sio.loadmat(
-        #     'KKT_opt/KKT_1CAV_opt_data.mat').get('KKT_obj_1CAV'))
+        ############################################### CAV environment ###############################################
 
-        # ############################################### CAV environment ###############################################
+        self.CAV_pair_num = 2
+        self.n_agents = self.CAV_pair_num
+        self.n = self.n_agents
 
-        # self.CAV_pair_num = 2
-        # self.n_agents = self.CAV_pair_num
-        # self.n = self.n_agents
+        self.n_adversaries = 0
 
-        # self.n_adversaries = 0
+        # self.action_space = [spaces.Discrete(2) for i in range(self.n)]
 
-        # # self.action_space = [spaces.Discrete(2) for i in range(self.n)]
+        # bandwidth, own workload, own distance, avg workload of others, average distance of others
+        # self.observation_space = [(6,) for i in range(self.n)]
 
-        # # bandwidth, own workload, own distance, avg workload of others, average distance of others
-        # # self.observation_space = [(6,) for i in range(self.n)]
+        # All candidate states for transmitter-receiver distances
+        self.distances = np.arange(6, 36, 6)
 
-        # # All candidate states for transmitter-receiver distances
-        # self.distances = np.arange(6, 36, 6)
+        # state transition prob. matrix for distance states
+        self.trans_matrix = np.array([[0.35, 0.30, 0.20, 0.10, 0.05],
+                                      [0.25, 0.30, 0.25, 0.15, 0.05],
+                                      [0.10, 0.25, 0.30, 0.25, 0.10],
+                                      [0.05, 0.15, 0.25, 0.30, 0.25],
+                                      [0.05, 0.10, 0.20, 0.30, 0.35]])
 
-        # # state transition prob. matrix for distance states
-        # self.trans_matrix = np.array([[0.35, 0.30, 0.20, 0.10, 0.05],
-        #                               [0.25, 0.30, 0.25, 0.15, 0.05],
-        #                               [0.10, 0.25, 0.30, 0.25, 0.10],
-        #                               [0.05, 0.15, 0.25, 0.30, 0.25],
-        #                               [0.05, 0.10, 0.20, 0.30, 0.35]])
+        self.workloads = np.array([4, 5, 6, 7, 8])
+        self.load_trans = np.array([[0.35, 0.30, 0.20, 0.10, 0.05],
+                                    [0.25, 0.30, 0.25, 0.15, 0.05],
+                                    [0.10, 0.25, 0.30, 0.25, 0.10],
+                                    [0.05, 0.15, 0.25, 0.30, 0.25],
+                                    [0.05, 0.10, 0.20, 0.30, 0.35]])
 
-        # self.workloads = np.array([4, 5, 6, 7, 8])
-        # self.load_trans = np.array([[0.35, 0.30, 0.20, 0.10, 0.05],
-        #                             [0.25, 0.30, 0.25, 0.15, 0.05],
-        #                             [0.10, 0.25, 0.30, 0.25, 0.10],
-        #                             [0.05, 0.15, 0.25, 0.30, 0.25],
-        #                             [0.05, 0.10, 0.20, 0.30, 0.35]])
-
-        # self.O_init = 8
+        self.O_init = 8
 
     @property
     def action_space(self):
@@ -183,83 +181,201 @@ class CAVVelEnv(Environment):
                 `observation_space`.
             dict: The episode-level information.
                 Note that this is not part of `env_info` provided in `step()`.
-                It contains information of he entire episode， which could be
+                It contains information of the entire episode， which could be
                 needed to determine the first action (e.g. in the case of
                 goal-conditioned or MTRL.)
 
         """
-        self._point = np.zeros_like(self._goal)
-        dist = np.linalg.norm(self._point - self._goal)
-
-        first_obs = np.concatenate([self._point, (dist, )])
         self._step_cnt = 0
+       
+        ####################### Available bandwidth (depending on HDV status) #####################################################
+        band_basis = self.bandwidth_basis[self._step_cnt]
+        if band_basis == 7:
+            self.Bandwidth_available = np.random.default_rng().choice([6,7],1, [0.5, 0.5])
+        elif band_basis == 2:
+            self.Bandwidth_available = np.random.default_rng().choice([2,3],1, [0.5, 0.5])
+        else:
+            self.Bandwidth_available = np.random.default_rng().choice([band_basis-1, band_basis, band_basis+1], 1, [0.25, 0.5, 0.25])
+        Bandwidth_norm = (self.Bandwidth_available - 2)/5
+        ########################### CAV Workload (number of objects for detection) ##################################################################
+        
+           
+        # Dynmaic workload: number of objects for detection by the DNN model
+        self.O_vehs_all = self.O_init * np.ones(self.CAV_pair_num)
+        O_norm = (self.O_vehs_all - np.array([4,4]))/4
+           
+        
+        ############################# Distance and channel gain ###############################################
+        
+        self.Distance_all = 6*np.ones(self.CAV_pair_num)
+        Distance_norm = (self.Distance_all - np.array([6,6]))/24
+        
+        # Path_loss_dB_all = 32.4 + 20*np.log10(self.Distance_all) + 20*math.log10(self.f_center) # NR-V2X 37.885 highway case, d in meter, f_center in GhZ, Path_loss_dB in dB       
+        # self.Channel_gain_all = 1/np.power(10, Path_loss_dB_all/10)
+        
 
+        ########################################## State ######################################################
+        self.curr_state = [0]*self.n_agents
+        self.pre_action = np.array([1]*self.n_agents)
+        # self.pre_action_BFoptimal = np.array([1]*self.n_agents)
+        # self.pre_action_random = np.array([1]*self.n_agents)
+        # print("self.pre_action_BFoptimal:",self.pre_action_BFoptimal)
+        
+        for i_agent in range(0, self.n_agents):            
+            self.curr_state[i_agent] = np.r_[Bandwidth_norm, O_norm[i_agent], Distance_norm[i_agent]]
+        # print("self.curr_state:", self.curr_state)   
+        first_obs = np.array(self.curr_state).flatten()
+
+        # self._step_cnt = 1
+   
         return first_obs, dict(goal=self._goal)
 
-    def step(self, action):
-        """Step the environment.
-
-        Args:
-            action (np.ndarray): An action provided by the agent.
-
-        Returns:
-            EnvStep: The environment step resulting from the action.
-
-        Raises:
-            RuntimeError: if `step()` is called after the environment
-            has been
-                constructed and `reset()` has not been called.
-
-        """
-        print(f"\n\n\nAction: {action}\nAction_space: {self.action_space}\n Action_space.low {self.action_space.low}\n Action_space.high{self.action_space.high} \n\n\n")
+    def step(self, curr_action):
+     
+        ########################################################################### MADDPG ######################################################################################################
         if self._step_cnt is None:
             raise RuntimeError('reset() must be called before step()!')
+        
+        actions_array = np.array(curr_action)
+        # print("actions_array:", actions_array)
+        actions = np.array([np.argmax(actions_array[0]), np.argmax(actions_array[1])])
+        # print("actions:", actions)
 
-        # enforce action space
-        a = action.copy()  # NOTE: we MUST copy the action before modifying it
-        a = np.clip(a, self.action_space.low, self.action_space.high)
+        ################################### Action processing #################################################
+        # Number of CAV pairs in cooperation mode
+        Activated_CAV_pair_num = sum(actions)
+        Activated_index = np.where(actions == 1)
+        # Activated_index = np.array(Activated_index)[0].tolist()
+        # print("Activated_index:", Activated_index)   
+        
+        ################################### Given state and action ############################################
+        
+        obj_opt = 0
 
-        self._point = np.clip(self._point + a, -self._arena_size,
-                              self._arena_size)
-        if self._visualize:
-            print(self.render('ascii'))
+        if Activated_CAV_pair_num > 0:
+            O_vehs = self.O_vehs_all[Activated_index]
+            Distance = self.Distance_all[Activated_index]
+            # print("O_vehs:", O_vehs)    
+            # print("Distance:", Distance)
+            if Activated_CAV_pair_num > 1:
+                sort_index = np.array(Distance).argsort()
+                # print("sort_index:", sort_index)
+                O_vehs_ordered = O_vehs[sort_index]
+                Distance_ordered = Distance[sort_index]
 
-        dist = np.linalg.norm(self._point - self._goal)
-        succ = dist < np.linalg.norm(self.action_space.low)
+        if Activated_CAV_pair_num == 2:
+            obj_opt = self.obj_opt_2CAV[int(self.Bandwidth_available-2), int(O_vehs_ordered[0]-4), int(O_vehs_ordered[1]-4), int(Distance_ordered[0]/3-1), int(Distance_ordered[1]/3-1)]
+        elif Activated_CAV_pair_num == 1:
+            obj_opt = self.obj_opt_1CAV[int(self.Bandwidth_available-2), int(O_vehs[0]-4), int(Distance[0]/3-1)]
 
-        # dense reward
-        reward = -dist
-        # done bonus
-        if succ:
-            reward += self._done_bonus
-        # Type conversion
-        if not isinstance(reward, float):
-            reward = float(reward)
 
-        # sometimes we don't want to terminate
-        done = succ and not self._never_done
+        ####################################### Calculate the reward ##########################################
+        reward = 0
+        reward_modified = 0
 
-        obs = np.concatenate([self._point, (dist, )])
+        if obj_opt == -1:           
+            obj_modified = 0
+            actions_modified = np.array([0,0])           
+            switch_cost = self.CAV_pair_num - np.count_nonzero(actions_modified == self.pre_action)
+            reward_modified = obj_modified - switch_cost * self.switch_coeff
+            reward = reward_modified + self.infeasible_penalty
+        else:
+            obj_modified = obj_opt    
+            actions_modified = actions  
+            switch_cost = self.CAV_pair_num - np.count_nonzero(actions_modified == self.pre_action)
+            reward = obj_opt - switch_cost * self.switch_coeff
+            reward_modified = reward
+        # print("reward_modified:",reward_modified)
+        # if obj_opt != -1:
+        #     reward = obj_opt - switch_cost/10
+
+        
+        
+        # print("switch_cost:", switch_cost)
+        self.pre_action = actions_modified
+        # print("self.pre_action:", self.pre_action)
+
+
+        ####################################### Get the next state ##########################################
+        
+         ####################### Available bandwidth (depending on HDV status) #####################################################
+        band_basis = self.bandwidth_basis[self._step_cnt]
+        if band_basis == 7:
+            self.Bandwidth_available = np.random.default_rng().choice([6,7],1, [0.5, 0.5])
+        elif band_basis == 2:
+            self.Bandwidth_available = np.random.default_rng().choice([2,3],1, [0.5, 0.5])
+        else:
+            self.Bandwidth_available = np.random.default_rng().choice([band_basis-1, band_basis, band_basis+1], 1, [0.25, 0.5, 0.25])
+        Bandwidth_norm = (self.Bandwidth_available - 2)/5
+        ########################### CAV Workload (number of objects for detection) ##################################################################
+        
+        O_next = np.zeros([self.n_agents])
+        for i_agent in range(0, self.n_agents): 
+            p_O = self.load_trans[int(self.O_vehs_all[i_agent]-4),:]           
+            O_next[i_agent] = np.random.default_rng().choice(self.workloads, 1, p=p_O)
+
+        self.O_vehs_all = O_next
+        O_norm = (self.O_vehs_all - np.array([4,4]))/4
+
+        
+        ############################# Distance and channel gain ###############################################
+ 
+        distance_next = np.zeros([self.n_agents])
+        for i_agent in range(0, self.n_agents): 
+            p_D = self.trans_matrix[int(self.Distance_all[i_agent]/6-1),:]           
+            distance_next[i_agent] = np.random.default_rng().choice(self.distances, 1, p=p_D)
+
+        self.Distance_all = distance_next
+        Distance_norm = (self.Distance_all - np.array([6,6]))/24
+
+        # print("self.O_vehs_all:", self.O_vehs_all)
+        # print("self.Distance_all:", self.Distance_all)
+       
+
+        ##################################### State ###########################################################
+        state_next = [0]*self.n_agents # This is a list
+        rew_n = [0]*self.n_agents
+        done_n = [0]*self.n_agents
+
+        obj_n = [0]*self.n_agents
+        switch_n = [0]*self.n_agents
 
         self._step_cnt += 1
+        succ = False
+        if self._step_cnt == self._max_episode_length:
+            succ = True
+            # self.episode += 1
+
+        
+        for i_agent in range(0, self.n_agents):            
+            state_next[i_agent] = np.r_[Bandwidth_norm, O_norm[i_agent], Distance_norm[i_agent]]
+            rew_n[i_agent] = reward
+            done_n[i_agent] = succ
+            obj_n[i_agent] = obj_modified
+            switch_n[i_agent] = switch_cost
+        self.curr_state = state_next # This is a list of one dimensional (4,) np arrays
+
+        done = succ and not self._never_done
 
         step_type = StepType.get_step_type(
             step_cnt=self._step_cnt,
             max_episode_length=self._max_episode_length,
             done=done)
-
+        # raise RuntimeError(f"\n\n\nSTEP TYPE {step_type}\n\n\n")
         if step_type in (StepType.TERMINAL, StepType.TIMEOUT):
             self._step_cnt = None
 
         return EnvStep(env_spec=self.spec,
-                       action=action,
+                       action=curr_action,
                        reward=reward,
-                       observation=obs,
+                       observation=np.array(state_next).flatten(),
                        env_info={
                            'task': self._task,
                            'success': succ
                        },
                        step_type=step_type)
+        
+
 
     def render(self, mode):
         """Renders the environment.
@@ -296,8 +412,12 @@ class CAVVelEnv(Environment):
 
         """
         # Start with CAV
-        goals = np.random.uniform(-2, 2, size=(num_tasks, 2))
-        tasks = [{'goal': goal} for goal in goals]
+        # goals = np.random.uniform(-2, 2, size=(num_tasks, 2))
+        tasks = [{"goal": np.array([7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+                                    6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+                                    5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+                                    6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+                                    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7])} for _ in range(num_tasks)]
         return tasks
 
     def set_task(self, task):
