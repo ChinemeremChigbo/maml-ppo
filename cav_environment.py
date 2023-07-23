@@ -370,7 +370,7 @@ class CAVVelEnv(Environment):
 
         return EnvStep(env_spec=self.spec,
                        action=action,
-                       reward=1,
+                       reward=reward,
                        observation=np.array(state_next).flatten(),
                        env_info={
                            'task': self._task,
