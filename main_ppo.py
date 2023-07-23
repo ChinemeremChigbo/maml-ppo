@@ -20,7 +20,7 @@ from cav_environment import CAVVelEnv
 
 @click.command()
 @click.option('--seed', default=1)
-@click.option('--epochs', default=5)
+@click.option('--epochs', default=15)
 @click.option('--episodes_per_task', default=4)
 @click.option('--meta_batch_size', default=3)
 @wrap_experiment(snapshot_mode='all')
@@ -40,7 +40,7 @@ def main(ctxt, seed, epochs, episodes_per_task,
 
     """
     set_seed(seed)
-    max_episode_length = 5
+    max_episode_length = 75
     env = normalize(CAVVelEnv(max_episode_length=max_episode_length),
                     expected_action_scale=10.)
 
