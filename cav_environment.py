@@ -51,8 +51,8 @@ class CAVVelEnv(Environment):
                                            shape=(6, ),
                                            dtype=np.float32)
         print("self.obs", self._observation_space)
-        self._action_space = akro.Box(low=-0.1,
-                                      high=0.1,
+        self._action_space = akro.Box(low=-1,
+                                      high=1,
                                       shape=(2, ),
                                       dtype=np.float32)
         self._spec = EnvSpec(action_space=self.action_space,
@@ -230,17 +230,20 @@ class CAVVelEnv(Environment):
    
         return first_obs, dict(goal=self._goal)
 
-    def step(self, curr_action):
+    def step(self, action):
      
         ########################################################################### MADDPG ######################################################################################################
         if self._step_cnt is None:
             raise RuntimeError('reset() must be called before step()!')
         
-        actions_array = np.array(curr_action)
-        # print("actions_array:", actions_array)
-        actions = np.array([np.argmax(actions_array[0]), np.argmax(actions_array[1])])
-        # print("actions:", actions)
-
+        actions_array = np.array(action)
+        actions = []
+        for a in actions_array:
+            if (a < 0):
+                actions.append(0)
+            else:
+                actions.append(1)
+        actions = np.array(actions)
         ################################### Action processing #################################################
         # Number of CAV pairs in cooperation mode
         Activated_CAV_pair_num = sum(actions)
@@ -361,13 +364,13 @@ class CAVVelEnv(Environment):
             step_cnt=self._step_cnt,
             max_episode_length=self._max_episode_length,
             done=done)
-        # raise RuntimeError(f"\n\n\nSTEP TYPE {step_type}\n\n\n")
         if step_type in (StepType.TERMINAL, StepType.TIMEOUT):
             self._step_cnt = None
+        # print(f"\n\nstate: {state_next}, action: {actions},  reward: {reward}, obj_opt: {obj_opt}, switch_cost: {switch_cost}\n\n")
 
         return EnvStep(env_spec=self.spec,
-                       action=curr_action,
-                       reward=reward,
+                       action=action,
+                       reward=1,
                        observation=np.array(state_next).flatten(),
                        env_info={
                            'task': self._task,
