@@ -5,8 +5,7 @@ import click
 import torch
 
 from garage import wrap_experiment
-from garage.envs import GymEnv, normalize
-from garage.envs.mujoco import HalfCheetahDirEnv
+from garage.envs import normalize
 from garage.experiment import MetaEvaluator
 from garage.experiment.deterministic import set_seed
 from garage.experiment.task_sampler import SetTaskSampler
@@ -86,6 +85,5 @@ def main(ctxt, seed, epochs, episodes_per_task,
     trainer.setup(algo, env)
     trainer.train(n_epochs=epochs,
                   batch_size=episodes_per_task * max_episode_length)
-
 
 main()

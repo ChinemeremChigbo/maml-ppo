@@ -1,20 +1,12 @@
 import math
-import random
 
 import akro
-import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 import scipy.io as sio
-import sympy as sp
 from garage import Environment, EnvSpec, EnvStep, StepType
-from gym import spaces
-
-"""Simple 2D environment containing a point and a goal location."""
-
 
 class CAVVelEnv(Environment):
-    """A simple 2D point environment.
+    """A simple CAV point environment.
 
     Args:
         goal (np.ndarray): A 2D array representing the goal position
@@ -50,7 +42,6 @@ class CAVVelEnv(Environment):
                                            high=np.inf,
                                            shape=(6, ),
                                            dtype=np.float32)
-        print("self.obs", self._observation_space)
         self._action_space = akro.Box(low=-1,
                                       high=1,
                                       shape=(2, ),
@@ -127,10 +118,6 @@ class CAVVelEnv(Environment):
 
         self.n_adversaries = 0
 
-        # self.action_space = [spaces.Discrete(2) for i in range(self.n)]
-
-        # bandwidth, own workload, own distance, avg workload of others, average distance of others
-        # self.observation_space = [(6,) for i in range(self.n)]
 
         # All candidate states for transmitter-receiver distances
         self.distances = np.arange(6, 36, 6)
@@ -169,9 +156,6 @@ class CAVVelEnv(Environment):
     @property
     def render_modes(self):
         """list: A list of string representing the supported render modes."""
-        return [
-            'ascii',
-        ]
 
     def reset(self):
         """Reset the environment.
@@ -209,18 +193,10 @@ class CAVVelEnv(Environment):
         
         self.Distance_all = 6*np.ones(self.CAV_pair_num)
         Distance_norm = (self.Distance_all - np.array([6,6]))/24
-        
-        # Path_loss_dB_all = 32.4 + 20*np.log10(self.Distance_all) + 20*math.log10(self.f_center) # NR-V2X 37.885 highway case, d in meter, f_center in GhZ, Path_loss_dB in dB       
-        # self.Channel_gain_all = 1/np.power(10, Path_loss_dB_all/10)
-        
 
         ########################################## State ######################################################
         self.curr_state = [0]*self.n_agents
         self.pre_action = np.array([1]*self.n_agents)
-        # self.pre_action_BFoptimal = np.array([1]*self.n_agents)
-        # self.pre_action_random = np.array([1]*self.n_agents)
-        # print("self.pre_action_BFoptimal:",self.pre_action_BFoptimal)
-        
         for i_agent in range(0, self.n_agents):            
             self.curr_state[i_agent] = np.r_[Bandwidth_norm, O_norm[i_agent], Distance_norm[i_agent]]
         # print("self.curr_state:", self.curr_state)   
@@ -258,11 +234,8 @@ class CAVVelEnv(Environment):
         if Activated_CAV_pair_num > 0:
             O_vehs = self.O_vehs_all[Activated_index]
             Distance = self.Distance_all[Activated_index]
-            # print("O_vehs:", O_vehs)    
-            # print("Distance:", Distance)
             if Activated_CAV_pair_num > 1:
                 sort_index = np.array(Distance).argsort()
-                # print("sort_index:", sort_index)
                 O_vehs_ordered = O_vehs[sort_index]
                 Distance_ordered = Distance[sort_index]
 
@@ -270,7 +243,6 @@ class CAVVelEnv(Environment):
             obj_opt = self.obj_opt_2CAV[int(self.Bandwidth_available-2), int(O_vehs_ordered[0]-4), int(O_vehs_ordered[1]-4), int(Distance_ordered[0]/3-1), int(Distance_ordered[1]/3-1)]
         elif Activated_CAV_pair_num == 1:
             obj_opt = self.obj_opt_1CAV[int(self.Bandwidth_available-2), int(O_vehs[0]-4), int(Distance[0]/3-1)]
-
 
         ####################################### Calculate the reward ##########################################
         reward = 0
@@ -288,16 +260,8 @@ class CAVVelEnv(Environment):
             switch_cost = self.CAV_pair_num - np.count_nonzero(actions_modified == self.pre_action)
             reward = obj_opt - switch_cost * self.switch_coeff
             reward_modified = reward
-        # print("reward_modified:",reward_modified)
-        # if obj_opt != -1:
-        #     reward = obj_opt - switch_cost/10
-
         
-        
-        # print("switch_cost:", switch_cost)
         self.pre_action = actions_modified
-        # print("self.pre_action:", self.pre_action)
-
 
         ####################################### Get the next state ##########################################
         
@@ -331,10 +295,6 @@ class CAVVelEnv(Environment):
         self.Distance_all = distance_next
         Distance_norm = (self.Distance_all - np.array([6,6]))/24
 
-        # print("self.O_vehs_all:", self.O_vehs_all)
-        # print("self.Distance_all:", self.Distance_all)
-       
-
         ##################################### State ###########################################################
         state_next = [0]*self.n_agents # This is a list
         rew_n = [0]*self.n_agents
@@ -366,7 +326,6 @@ class CAVVelEnv(Environment):
             done=done)
         if step_type in (StepType.TERMINAL, StepType.TIMEOUT):
             self._step_cnt = None
-        # print(f"\n\nstate: {state_next}, action: {actions},  reward: {reward}, obj_opt: {obj_opt}, switch_cost: {switch_cost}\n\n")
 
         return EnvStep(env_spec=self.spec,
                        action=action,
@@ -385,18 +344,11 @@ class CAVVelEnv(Environment):
 
         Args:
             mode (str): the mode to render with. The string must be present in
-                `self.render_modes`.
-
-        Returns:
-            str: the point and goal of environment.
-
+                `Environment.render_modes`.
         """
-        return f'Point: {self._point}, Goal: {self._goal}'
 
     def visualize(self):
         """Creates a visualization of the environment."""
-        self._visualize = True
-        print(self.render('ascii'))
 
     def close(self):
         """Close the env."""
@@ -414,8 +366,6 @@ class CAVVelEnv(Environment):
                 point in 2D space.
 
         """
-        # Start with CAV
-        # goals = np.random.uniform(-2, 2, size=(num_tasks, 2))
         tasks = [{"goal": np.array([7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
                                     6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
                                     5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
