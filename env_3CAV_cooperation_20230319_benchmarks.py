@@ -101,15 +101,13 @@ class Network():
 
         ############################################### CAV environment ###############################################
        
-        self.CAV_pair_num = 3
-        self.n_agents = self.CAV_pair_num
-        self.n = self.n_agents
+        self.CAV_pairs = 2
 
         self.n_adversaries = 0
 
-        self.action_space = [spaces.Discrete(2) for i in range(self.n)]
+        self.action_space = [spaces.Discrete(2) for i in range(self.CAV_pairs)]
         # self.observation_space =  [spaces.Box(5,) for i in range(self.n)]
-        self.observation_space =  [(6,) for i in range(self.n)] # bandwidth, own workload, own distance, avg workload of others, average distance of others
+        self.observation_space =  [(6,) for i in range(self.CAV_pairs)] # bandwidth, own workload, own distance, avg workload of others, average distance of others
 
         self.distances = np.arange(6,36,6) # All candidate states for transmitter-receiver distances
         # state transition prob. matrix for distance states
@@ -167,13 +165,13 @@ class Network():
         
            
         # Dynmaic workload: number of objects for detection by the DNN model
-        self.O_vehs_all = self.O_init * np.ones(self.CAV_pair_num)
+        self.O_vehs_all = self.O_init * np.ones(self.CAV_pairs)
         O_norm = (self.O_vehs_all - np.array([4,4,4]))/4
            
         
         ############################# Distance and channel gain ###############################################
         
-        self.Distance_all = 6*np.ones(self.CAV_pair_num)
+        self.Distance_all = 6*np.ones(self.CAV_pairs)
         Distance_norm = (self.Distance_all - np.array([6,6,6]))/24
         
         # Path_loss_dB_all = 32.4 + 20*np.log10(self.Distance_all) + 20*math.log10(self.f_center) # NR-V2X 37.885 highway case, d in meter, f_center in GhZ, Path_loss_dB in dB       
@@ -181,14 +179,14 @@ class Network():
         
 
         ########################################## State ######################################################
-        self.curr_state = [0]*self.n_agents
-        self.pre_action = np.array([1]*self.n_agents)
-        self.pre_action_BFoptimal = np.array([1]*self.n_agents)
-        self.pre_action_random = np.array([1]*self.n_agents)
+        self.curr_state = [0]*self.CAV_pairs
+        self.pre_action = np.array([1]*self.CAV_pairs)
+        self.pre_action_BFoptimal = np.array([1]*self.CAV_pairs)
+        self.pre_action_random = np.array([1]*self.CAV_pairs)
         # print("self.pre_action_BFoptimal:",self.pre_action_BFoptimal)
         
-        for i_agent in range(0, self.n_agents):            
-            self.curr_state[i_agent] = np.r_[Bandwidth_norm, O_norm[i_agent], Distance_norm[i_agent], (sum(O_norm)-O_norm[i_agent])/(self.n_agents-1),(sum(Distance_norm)-Distance_norm[i_agent])/(self.n_agents-1),self.pre_action[i_agent]]
+        for i_agent in range(0, self.CAV_pairs):            
+            self.curr_state[i_agent] = np.r_[Bandwidth_norm, O_norm[i_agent], Distance_norm[i_agent], (sum(O_norm)-O_norm[i_agent])/(self.CAV_pairs-1),(sum(Distance_norm)-Distance_norm[i_agent])/(self.CAV_pairs-1),self.pre_action[i_agent]]
             # self.curr_state[i_agent] = np.r_[Bandwidth_norm, O_norm[i_agent], Distance_norm[i_agent], (sum(O_norm)-O_norm[i_agent])/(self.n_agents-1),(sum(Distance_norm)-Distance_norm[i_agent])/(self.n_agents-1)]
 
         # print("self.curr_state:", self.curr_state)   
@@ -216,7 +214,7 @@ class Network():
                     actions_temp = np.array([action_agent_0, action_agent_1, action_agent_2])
                     # print("actions_temp:",actions_temp)
                     # print("self.pre_action_BFoptimal:",self.pre_action_BFoptimal)
-                    switch_cost = self.CAV_pair_num - np.count_nonzero(actions_temp == self.pre_action_BFoptimal)
+                    switch_cost = self.CAV_pairs - np.count_nonzero(actions_temp == self.pre_action_BFoptimal)
                     # print(switch_cost)
 
                     Activated_CAV_pair_num = sum(actions_temp)
@@ -317,7 +315,7 @@ class Network():
             actions_random = np.array([0,0,0])
             obj_opt = 0
             
-        switch_cost_random = self.CAV_pair_num - np.count_nonzero(actions_random == self.pre_action_random)
+        switch_cost_random = self.CAV_pairs - np.count_nonzero(actions_random == self.pre_action_random)
         reward_random = obj_opt - switch_cost_random*switch_coeff
 
         obj_random = obj_opt
@@ -371,13 +369,13 @@ class Network():
         if obj_opt == -1:           
             obj_modified = 0
             actions_modified = np.array([0,0,0])           
-            switch_cost = self.CAV_pair_num - np.count_nonzero(actions_modified == self.pre_action)
+            switch_cost = self.CAV_pairs - np.count_nonzero(actions_modified == self.pre_action)
             reward_modified = obj_modified - switch_cost*switch_coeff
             reward = reward_modified + self.infeasible_penalty
         else:
             obj_modified = obj_opt    
             actions_modified = actions  
-            switch_cost = self.CAV_pair_num - np.count_nonzero(actions_modified == self.pre_action)
+            switch_cost = self.CAV_pairs - np.count_nonzero(actions_modified == self.pre_action)
             reward = obj_opt - switch_cost*switch_coeff
             reward_modified = reward
         # print("reward_modified:",reward_modified)
@@ -404,8 +402,8 @@ class Network():
         Bandwidth_norm = (self.Bandwidth_available - 2)/5
         ########################### CAV Workload (number of objects for detection) ##################################################################
         
-        O_next = np.zeros([self.n_agents])
-        for i_agent in range(0, self.n_agents): 
+        O_next = np.zeros([self.CAV_pairs])
+        for i_agent in range(0, self.CAV_pairs): 
             p_O = self.load_trans[int(self.O_vehs_all[i_agent]-4),:]           
             O_next[i_agent] = np.random.default_rng().choice(self.workloads, 1, p=p_O)
 
@@ -415,8 +413,8 @@ class Network():
         
         ############################# Distance and channel gain ###############################################
  
-        distance_next = np.zeros([self.n_agents])
-        for i_agent in range(0, self.n_agents): 
+        distance_next = np.zeros([self.CAV_pairs])
+        for i_agent in range(0, self.CAV_pairs): 
             p_D = self.trans_matrix[int(self.Distance_all[i_agent]/6-1),:]           
             distance_next[i_agent] = np.random.default_rng().choice(self.distances, 1, p=p_D)
 
@@ -428,12 +426,12 @@ class Network():
        
 
         ##################################### State ###########################################################
-        state_next = [0]*self.n_agents # This is a list
-        rew_n = [0]*self.n_agents
-        done_n = [0]*self.n_agents
+        state_next = [0]*self.CAV_pairs # This is a list
+        rew_n = [0]*self.CAV_pairs
+        done_n = [0]*self.CAV_pairs
 
-        obj_n = [0]*self.n_agents
-        switch_n = [0]*self.n_agents
+        obj_n = [0]*self.CAV_pairs
+        switch_n = [0]*self.CAV_pairs
 
         self.step_count += 1
         done = False
@@ -442,8 +440,8 @@ class Network():
             # self.episode += 1
 
         
-        for i_agent in range(0, self.n_agents):            
-            state_next[i_agent] = np.r_[Bandwidth_norm, O_norm[i_agent], Distance_norm[i_agent], (sum(O_norm)-O_norm[i_agent])/(self.n_agents-1),(sum(Distance_norm)-Distance_norm[i_agent])/(self.n_agents-1),self.pre_action[i_agent]]
+        for i_agent in range(0, self.CAV_pairs):            
+            state_next[i_agent] = np.r_[Bandwidth_norm, O_norm[i_agent], Distance_norm[i_agent], (sum(O_norm)-O_norm[i_agent])/(self.CAV_pairs-1),(sum(Distance_norm)-Distance_norm[i_agent])/(self.CAV_pairs-1),self.pre_action[i_agent]]
             # state_next[i_agent] = np.r_[Bandwidth_norm, O_norm[i_agent], Distance_norm[i_agent], (sum(O_norm)-O_norm[i_agent])/(self.n_agents-1),(sum(Distance_norm)-Distance_norm[i_agent])/(self.n_agents-1)]
             rew_n[i_agent] = reward
             done_n[i_agent] = done
