@@ -32,11 +32,7 @@ class CAVVelEnv(Environment):
     """A simple CAV point environment.
 
     Args:
-        goal (np.ndarray): A 2D array representing the goal position
-        arena_size (float): The size of arena where the point is constrained
-            within (-arena_size, arena_size) in each dimension
-        done_bonus (float): A numerical bonus added to the reward
-            once the point as reached the goal
+        goal (np.ndarray): A 2D array representing the input transition matrix
         never_done (bool): Never send a `done` signal, even if the
             agent achieves the goal
         max_episode_length (int): The maximum steps allowed for an episode.
@@ -297,7 +293,7 @@ class CAVVelEnv(Environment):
         Returns:
             list[dict[str, np.ndarray]]: A list of "tasks", where each task is
                 a dictionary containing a single key, "goal", mapping to a
-                point in 2D space.
+                random transition matrix.
 
         """
         tasks = [{"goal": rand_trans_matrix()} for _ in range(num_tasks)]
@@ -308,19 +304,14 @@ class CAVVelEnv(Environment):
 
         Args:
             task (dict[str, np.ndarray]): A task (a dictionary containing a
-                single key, "goal", which should be a point in 2D space).
+                single key, "goal", which should be a random transition matrix).
 
         """
         self._task = task
         self._goal = task['goal']
 
-    def render(self, mode):
-        """Renders the environment.
-
-        Args:
-            mode (str): the mode to render with. The string must be present in
-                `Environment.render_modes`.
-        """
+    def render(self):
+        """Renders the environment."""
 
     def visualize(self):
         """Creates a visualization of the environment."""
