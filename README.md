@@ -183,7 +183,7 @@ python3 experiments.py
 ### Run the `main_ppo.py` File
 
 ```bash
-python3 main_ppo.py
+python3 main_ppo.py --epochs=1 --episodes_per_task=1
 ```
 
 ### Run the test2CAV File
