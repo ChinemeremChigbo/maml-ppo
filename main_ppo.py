@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 """This is an example to train MAML-VPG on HalfCheetahDirEnv environment."""
 # pylint: disable=no-value-for-parameter
-import click
-import torch
+import os
+import tempfile
 
+import click
+import cloudpickle
+import torch
+from dowel import CsvOutput, logger, tabular
 from garage import wrap_experiment
 from garage.envs import normalize
-from garage.experiment import MetaEvaluator
+from garage.experiment import MetaEvaluator, SnapshotConfig
 from garage.experiment.deterministic import set_seed
 from garage.experiment.task_sampler import SetTaskSampler
 from garage.sampler import RaySampler
@@ -19,12 +23,13 @@ from cav_environment import CAVVelEnv
 
 @click.command()
 @click.option('--seed', default=1)
-@click.option('--epochs', default=15)
-@click.option('--episodes_per_task', default=4)
-@click.option('--meta_batch_size', default=3)
+@click.option('--epochs', default=2000)
+@click.option('--episodes_per_task', default=10)
+@click.option('--meta_batch_size', default=5)
+@click.option('--log_dir_name', default=os.getcwd()+"/logs")
 @wrap_experiment(snapshot_mode='all')
 def main(ctxt, seed, epochs, episodes_per_task,
-                              meta_batch_size):
+         meta_batch_size, log_dir_name):
     """Set up environment and algorithm and run the task.
 
     Args:
