@@ -55,7 +55,6 @@ class CAVVelEnv(Environment):
         self._step_cnt = None
         self._max_episode_length = max_episode_length
         self._visualize = False
-        self._point = np.zeros_like(self._goal)
         self._task = {'goal': self._goal}
         self._observation_space = akro.Box(low=-np.inf,
                                            high=np.inf,
@@ -310,11 +309,14 @@ class CAVVelEnv(Environment):
         self._task = task
         self._goal = task['goal']
 
-    def render(self):
+    def render(self, mode):
         """Renders the environment."""
+        return f'Goal: {self._goal}'
 
     def visualize(self):
         """Creates a visualization of the environment."""
+        self._visualize = True
+        print(self.render('ascii'))
 
     def close(self):
         """Close the env."""
@@ -336,3 +338,6 @@ class CAVVelEnv(Environment):
     @property
     def render_modes(self):
         """list: A list of string representing the supported render modes."""
+        return [
+            'ascii',
+        ]
