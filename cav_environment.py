@@ -4,6 +4,28 @@ import akro
 import numpy as np
 import scipy.io as sio
 from garage import Environment, EnvSpec, EnvStep, StepType
+from scipy.stats import truncnorm
+
+
+def rand_trans_matrix(trans_matrix=np.array([[0.35, 0.30, 0.20, 0.10, 0.05],
+                                             [0.25, 0.30, 0.25, 0.15, 0.05],
+                                             [0.10, 0.25, 0.30, 0.25, 0.10],
+                                             [0.05, 0.15, 0.25, 0.30, 0.25],
+                                             [0.05, 0.10, 0.20, 0.30, 0.35]], dtype=np.float32),
+                      mean=0,
+                      sd=1,
+                      binom_range=0.2
+                      ):
+    def get_truncated_normal(mean, sd, low, upp):
+        return truncnorm(
+            (low - mean) / sd, (upp - mean) / sd, loc=mean, scale=sd)
+
+    unnormalized = [[get_truncated_normal(mean=mean, sd=sd, low=num-(
+        num*binom_range), upp=num+(num*binom_range)).rvs() for num in row] for row in trans_matrix]
+
+    normalized = np.array([[item/sum(row) for item in row]
+                          for row in unnormalized], dtype=np.float32)
+    return normalized
 
 
 class CAVVelEnv(Environment):
@@ -22,11 +44,11 @@ class CAVVelEnv(Environment):
     """
 
     def __init__(self,
-                 goal=np.array([7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-                                6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-                                5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
-                                6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-                                7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7], dtype=np.float32),
+                 goal=np.array([[0.35, 0.30, 0.20, 0.10, 0.05],
+                                [0.25, 0.30, 0.25, 0.15, 0.05],
+                                [0.10, 0.25, 0.30, 0.25, 0.10],
+                                [0.05, 0.15, 0.25, 0.30, 0.25],
+                                [0.05, 0.10, 0.20, 0.30, 0.35]], dtype=np.float32),
                  never_done=False,
                  max_episode_length=math.inf,
                  CAV_pairs=2
@@ -57,13 +79,12 @@ class CAVVelEnv(Environment):
         ############################################### Communication parameters #################################################
 
         self._bandwidth_basis = np.array([7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-                                6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-                                5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
-                                6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-                                7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7], dtype=np.float32)  # *1000000
+                                          6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+                                          5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+                                          6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+                                          7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7], dtype=np.float32)  # *1000000
 
         self._switch_coeff = 0.4
-
         ############################################### optimal resource allocation ###################################
 
         self._obj_opt_2CAV = np.squeeze(sio.loadmat(
@@ -79,11 +100,7 @@ class CAVVelEnv(Environment):
         self._distances = np.arange(6, 36, 6)
 
         # state transition prob. matrix for distance states
-        self.trans_matrix = np.array([[0.35, 0.30, 0.20, 0.10, 0.05],
-                                      [0.25, 0.30, 0.25, 0.15, 0.05],
-                                      [0.10, 0.25, 0.30, 0.25, 0.10],
-                                      [0.05, 0.15, 0.25, 0.30, 0.25],
-                                      [0.05, 0.10, 0.20, 0.30, 0.35]])
+        self.trans_matrix = goal
 
         self.workloads = np.array([4, 5, 6, 7, 8])
         self.load_trans = np.array([[0.35, 0.30, 0.20, 0.10, 0.05],
@@ -247,7 +264,7 @@ class CAVVelEnv(Environment):
         for i_agent in range(self._CAV_pairs):
             state_next[i_agent] = np.r_[Bandwidth_norm,
                                         O_norm[i_agent], Distance_norm[i_agent]]
-        
+
         self.curr_state = state_next
 
         done = succ and not self._never_done
@@ -283,7 +300,7 @@ class CAVVelEnv(Environment):
                 point in 2D space.
 
         """
-        tasks = [{"goal": self._bandwidth_basis} for _ in range(num_tasks)]
+        tasks = [{"goal": rand_trans_matrix()} for _ in range(num_tasks)]
         return tasks
 
     def set_task(self, task):
