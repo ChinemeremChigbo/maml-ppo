@@ -2,15 +2,12 @@
 """This is an example to train MAML-VPG on HalfCheetahDirEnv environment."""
 # pylint: disable=no-value-for-parameter
 import os
-import tempfile
 
 import click
-import cloudpickle
 import torch
-from dowel import CsvOutput, logger, tabular
 from garage import wrap_experiment
 from garage.envs import normalize
-from garage.experiment import MetaEvaluator, SnapshotConfig
+from garage.experiment import MetaEvaluator
 from garage.experiment.deterministic import set_seed
 from garage.experiment.task_sampler import SetTaskSampler
 from garage.sampler import RaySampler
@@ -25,11 +22,12 @@ from cav_environment import CAVVelEnv
 @click.option('--seed', default=1)
 @click.option('--epochs', default=2000)
 @click.option('--episodes_per_task', default=10)
+@click.option('--max_episode_length', default=75)
 @click.option('--meta_batch_size', default=5)
-@click.option('--log_dir_name', default=os.getcwd()+"/logs")
-@wrap_experiment(snapshot_mode='all')
-def main(ctxt, seed, epochs, episodes_per_task,
-         meta_batch_size, log_dir_name):
+@click.option('--saved_dir', default=os.getcwd()+"/logs")
+@wrap_experiment()
+def main(ctxt, seed, epochs, episodes_per_task, max_episode_length,
+         meta_batch_size, saved_dir):
     """Set up environment and algorithm and run the task.
 
     Args:
@@ -40,9 +38,12 @@ def main(ctxt, seed, epochs, episodes_per_task,
         epochs (int): Number of training epochs.
         episodes_per_task (int): Number of episodes per epoch per task
             for training.
+        max_episode_length (int): The maximum steps allowed for an
+            episode.
         meta_batch_size (int): Number of tasks sampled per batch.
-
+        saved_dir (str): Path where snapshots are saved.
     """
+
     set_seed(seed)
     max_episode_length = 75
     env = normalize(CAVVelEnv(max_episode_length=max_episode_length),
@@ -59,16 +60,17 @@ def main(ctxt, seed, epochs, episodes_per_task,
                                               hidden_sizes=(8, 8),
                                               hidden_nonlinearity=torch.tanh,
                                               output_nonlinearity=None)
+
     def set_length(env, _task):
         env.close()
         return normalize(CAVVelEnv(max_episode_length=max_episode_length))
-    
+
     task_sampler = SetTaskSampler(CAVVelEnv, wrapper=set_length)
 
     meta_evaluator = MetaEvaluator(test_task_sampler=task_sampler,
                                    n_test_tasks=2,
                                    n_test_episodes=2)
-
+    ctxt.snapshot_dir = saved_dir
     trainer = Trainer(ctxt)
 
     sampler = RaySampler(agents=policy,
@@ -90,5 +92,7 @@ def main(ctxt, seed, epochs, episodes_per_task,
     trainer.setup(algo, env)
     trainer.train(n_epochs=epochs,
                   batch_size=episodes_per_task * max_episode_length)
+    
+
 
 main()
