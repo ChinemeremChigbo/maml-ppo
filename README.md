@@ -180,10 +180,22 @@ python3 main_trpo.py --env-name HalfCheetahDir-v1 --num-workers 20 --fast-lr 0.1
 python3 experiments.py
 ```
 
-### Run the `main_ppo.py` File
+### Run the `main_maml_ppo.py` File
 
 ```bash
-python3 main_ppo.py --epochs=1 --episodes_per_task=1
+python3 main_maml_ppo.py --epochs=1 --episodes_per_task=1
+```
+
+### Run the `main_cav_ppo.py` File
+
+```bash
+python3 main_cav_ppo.py --epochs=1 --episodes_per_task=1
+```
+
+### Run the `main_cav_maml_ppo.py` File
+
+```bash
+python3 main_cav_maml_ppo.py --epochs=1
 ```
 
 ### Run the test2CAV File
