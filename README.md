@@ -75,11 +75,6 @@ pyenv install 3.7.16
 
 ## Get `mujoco150`
 
-### Add universe `apt`
-```bash
-sudo add-apt-repository universe && sudo apt upgrade
-```
-
 ### Install `mujoco` Requirements
 
 ```bash
