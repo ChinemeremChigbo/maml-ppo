@@ -168,7 +168,8 @@ pip install wheel==0.40.0
 python3 -m pip install -r requirements.txt
 ```
 
-### Run the `main_trpo.py` File *To run this, uncomment mujoco requirement from requirements.txt*
+### Run the `main_trpo.py` File
+### *To run this, uncomment the mujoco requirement from requirements.txt and rerun the previous step*
 
 ```bash
 python3 main_trpo.py --env-name HalfCheetahDir-v1 --num-workers 20 --fast-lr 0.1 --max-kl 0.01 --fast-batch-size 5 --meta-batch-size 10 --num-layers 2 --hidden-size 100 --num-batches 1 --gamma 0.99 --tau 1.0 --cg-damping 1e-5 --ls-max-steps 10 --save-iters 1
