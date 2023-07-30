@@ -41,7 +41,7 @@ git clone https://ghp_randomly_generated_personal_access_token@github.com/Chinem
 cd maml-ppo/
 ```
 
-## Get `Python 3.7.17`
+## Get `Python 3.7.16`
 
 ### Install `Python` Requirements
 
@@ -67,10 +67,10 @@ printf "%s\n" '' 'export PATH="$HOME/.pyenv/bin:$PATH"' 'eval "$(pyenv init -)"'
 source ~/.bashrc
 ```
 
-### Install `Python 3.7.17`
+### Install `Python 3.7.16`
 
 ```bash
-pyenv install 3.7.17
+pyenv install 3.7.16
 ```
 
 ## Get `mujoco150`
@@ -137,10 +137,10 @@ source ~/.bashrc
 
 ## Create a Virtual Environment
 
-### Use `Python 3.7.17`
+### Use `Python 3.7.16`
 
 ```bash
-pyenv local 3.7.17
+pyenv local 3.7.16
 ```
 
 ### Make the Virtual Environment Folder
