@@ -174,25 +174,25 @@ python3 -m pip install -r requirements.txt
 python3 main_trpo.py --env-name HalfCheetahDir-v1 --num-workers 20 --fast-lr 0.1 --max-kl 0.01 --fast-batch-size 5 --meta-batch-size 10 --num-layers 2 --hidden-size 100 --num-batches 1 --gamma 0.99 --tau 1.0 --cg-damping 1e-5 --ls-max-steps 10 --save-iters 1
 ```
 
-### Run the `experiments.py` File
+### Run the `experiments.py` File to test `main_trpo`
 
 ```bash
 python3 experiments.py
 ```
 
-### Run the `main_maml_ppo.py` File
+### Run the `main_maml_ppo.py` File to generate pretrained pickled model
 
 ```bash
 python3 main_maml_ppo.py --epochs=1 --episodes_per_task=1
 ```
 
-### Run the `main_cav_ppo.py` File
+### Run the `main_cav_ppo.py` File to test PPO with 2 CAV pairs from scratch
 
 ```bash
 python3 main_cav_ppo.py --epochs=1 --episodes_per_task=1
 ```
 
-### Run the `main_cav_maml_ppo.py` File
+### Run the `main_cav_maml_ppo.py` File to test MAML PPO with 2 CAV pairs starting from pretrained model
 
 ```bash
 python3 main_cav_maml_ppo.py --epochs=1
