@@ -32,7 +32,7 @@ Tokens → Tokens (Classic) → Generate New Token → Generate New Token (Class
 ### Git Clone Using your Personal Access Token
 
 ```bash
-git clone https://ghp_randomly_generated_personal_access_token@github.com/ChinemeremChigbo/maml-ppo.git
+git clone https://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@github.com/ChinemeremChigbo/maml-ppo.git
 ```
 
 ### Navigate into the `git` Repo Folder
