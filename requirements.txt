@@ -1,6 +1,11 @@
+garage==2021.3.0
 gym==0.17.2
+mujoco_py==1.50.1.68
 pytest==6.1.2
 sacred==0.8.1
+tensorboard==2.4.0
+tensorflow==2.3.1
+tensorflow-estimator==2.3.0
 coverage==5.3
 scipy==1.7.3
 matplotlib==3.5.3
